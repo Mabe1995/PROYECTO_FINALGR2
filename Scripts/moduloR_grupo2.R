@@ -37,7 +37,7 @@ balance<-
 
 
 ## total de empresas por actividad Y  canton
-balance %>% group_by(actividad,canton) %>% summarise(total_empresas=n()) %>% 
+empresas_por_canton <- balance %>% group_by(actividad,canton) %>% summarise(total_empresas=n()) %>% 
   view("base2")
 
 ## total empresas por canton 
