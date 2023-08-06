@@ -1,7 +1,8 @@
 ---
-title: "ProyectoR_Grupo#2"
-author: "Stephany Pachay"
-date: "2023-08-05"
+title: "ANALISIS DE INDICADORES EMPRESAS 2014"
+subtitle: "ProyectoR_Grupo 2"
+author: "Stephany Pachay, Johanna Maita, María Belén Rosero"
+date: "2023-08-06"
 output: html_document
 ---
 
@@ -9,7 +10,13 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### **Setup**
+### **INTRODUCCIÓN A LA PROGRAMACIÓN EN R**
+
+La programación en R es un campo apasionante dentro del ámbito de la ciencia de datos y la estadística. R es un lenguaje de programación especialmente diseñado para el análisis estadístico y la visualización de datos. Creado por Ross Ihaka y Robert Gentleman en los años 90, R se ha convertido en una herramienta esencial para investigadores, analistas y profesionales que buscan extraer conocimiento valioso de conjuntos de datos complejos.
+
+Con su sintaxis flexible y su amplia gama de bibliotecas y paquetes, R ofrece una plataforma versátil para realizar tareas como manipulación de datos, modelado estadístico, generación de gráficos y visualización interactiva. Los usuarios pueden escribir scripts y funciones personalizadas para automatizar procesos y analizar datos de manera eficiente.
+
+La comunidad activa de usuarios y desarrolladores ha impulsado la creación y el mantenimiento de una amplia variedad de paquetes que abordan divers as necesidades en campos como la bioinformatic, la econometría, la genómica y más. La programación en R no solo implica escribir código, sino también comprender los principios estadísticos subyacentes y aplicar técnicas analíticas avanzadas. Es por ello que este proyecto se enfoca en la programación y análisis en R.
 
 **Load packages**
 
@@ -32,7 +39,7 @@ En el presente estudio, analizaremos los principales indicadores o ratios financ
 
 El análisis financiero presentado fue realizado con una valiosa herramienta de análisis de datos, R, esta herramienta nos ofrece un entorno de desarrollo interactivo donde facilita la exploración y manipulación de los datos, gracias a la misma a más de realizar el análisis cuantitativo podemos visualizar y presentar nuestros resultados.
 
-Al estar evaluando empresas con diferentes actividades económicas, los objetivos pueden varias de acuerdo a su naturaleza, sin embargo, nuestro análisis se enfoca principalmente en liquidez, solvencia y rentabilidad, por lo que nos hemos propuesto los siguientes objetivos.
+Al estar evaluando empresas con diferentes actividades económicas, los objetivos pueden varias de acuerdo a su naturaleza, sin embargo, nuestro análisis se enfoca principalmente en liquidez y solvencia, por lo que nos hemos propuesto los siguientes objetivos.
 
 ### **Objetivo General**
 
@@ -46,24 +53,24 @@ Evaluar la liquidez y solvencia de las empresas para cumplir sus obligaciones fi
 
 ### **Metodología**
 
-La Base a trabajar es balance_2014.xlsx, que consiste en 347 variables y 47033 observaciones junto con . A continuación se presentan las variables de dicha base.
+La Base a trabajar es `balance_2014.xlsx`, que consiste en 347 variables y 47033 observaciones. A demás de contar con 2 bases adicionales `cias` y `ciiu` en donde tenemos el significado de las variables de la base principal. Así se cargan las bases con la libreria `openxlsx` y se procede a transformar de un dataframe a un tibble ya que es un dataframe mejorado.
 
-```{r}
+```{r echo=TRUE, include=TRUE}
 balance_2014<-read.xlsx("Data/balances_2014.xlsx")
 ciiu<-read.xlsx("Data/ciiu.xlsx")
 cias<-read.xlsx("Data/cias_codebook.xlsx")
 balance_2014<-tibble(balance_2014)
 ```
 
-Los datos están compuestos por columnas tales como: expediente, ruc, nombre_cia, situación, tipo, fecha_const, país, provincia, cantón, ciudad, ciiu4_nivel1, ciiu4_nivel6, trab_direc, trab_admin, trab_produc, trab_otros, tamaño, año, entre otras cientos de variables.
+## Análisis preliminar y preparación de los datos
 
 ## Análisis preliminar y preparación de los datos
 
+En esta sección se creará la base, y luego se la depurará para poder identificar aquellos datos que se encuentran incompletos, incorrectos, inexactos,etc. De tal manera que podamos substituir, modificar o eliminar estos datos con el fin de obtener una base de datos de calidad y hacer un análisis correcto.
+
+La base con la que se trabajará está compuesta por variables tales como: expediente, ruc, nombre_cia, situación, tipo, fecha_const, país, provincia, cantón, ciudad, ciiu4_nivel1, ciiu4_nivel6, trab_direc, trab_admin, trab_produc, trab_otros, tamaño, año, entre otras cientos de variables.
+
 La base se compone de variables numéricas y categóricas.
-
-### Selección y Limpieza de datos
-
-En esta sección se creará la base, y luego se la depurará para poder identificar aquellos datos que se encuentran incompletos, incorrectos, inexactos, no pertinentes,etc. De tal manera que podamos substituir, modificar o eliminar estos datos con el fin de obtener una base de datos de calidad y hacer un análisis correcto.
 
 ```{r}
 balance<-
@@ -85,19 +92,23 @@ balance<-
          tipo=as.factor(tipo))
 ```
 
-Con la base de datos obtenida, creamos una tabla resumiendo el número total de empresas por actividad económica y por actividad económica por cada cantón:
+Con la base de datos obtenida, creamos una tabla para conocer el número total de empresas por actividad económica y por actividad económica por cada cantón:
 
 ```{r}
-empresas_por_canton <- balance %>% group_by(actividad,canton) %>% summarise(total_empresas=n())
+empresas_por_canton <- balance %>% group_by(actividad,canton) %>% summarise(total_empresas=n()) %>% 
+arrange(desc(total_empresas)) 
 empresas_por_canton
 ```
 
-En esta parte del proyecto se realizó la depuración de la base, en donde también se usó *function.*
+Así, podemos notar que las empresas están concentradas en las ciuades más grandes y representativas del Ecuador como son Guayaquil y Quito.
+
+### Selección y Limpieza de datos
+
+En esta parte del proyecto se realizó la depuración de la base, ya que al crear los indicadores financieron se pudo observar divisiones para 0 lo que nos arrojaba valors `inf` los que fueron convertidos a `NA` para luego omitirlos para el análisis. Adicional a esto se creó una función sencilla para esta transformación.
 
 ```{r}
 cantidad_de_NA <- sum(is.na(balance))
-balance<-balance[is.finite(balance$liquidez_corriente), ]
-balance<-balance[is.finite(balance$apalancamiento), ]
+cantidad_de_NA
 ```
 
 ```{r}
@@ -108,21 +119,19 @@ finitos <- function(data, columna) {
 ```
 
 ```{r}
+balance<-finitos(balance,"liquidez_corriente") 
+balance<-finitos(balance,"apalancamiento") 
 balance<-finitos(balance,"endeu_activo") 
 balance<-finitos(balance,"ende_patrimo") 
 balance<-finitos(balance,"ende_activo_fijo") 
 colSums(is.na(balance))
-base1 <- na.omit(balance)
-colSums(is.na(base1))
 ```
 
 ### Indicadores Financieros
 
-En esta sección se muestra gráficamente el comparativo de los indicadores financieros de liquidez y solvencia por situación y provincia.
+En esta sección se muestra gráficamente el comparativo de los indicadores financieros de liquidez y solvencia por situación `ACTIVA` y provincia. Por lo que se procedió a crear la base `activas`, en donde, encontramos valores atípicos y se usó una función (tomada de la web) para poder imputarlos,
 
 ```{r}
-attach(balance)
-
 activas<-balance %>% filter(situacion=="ACTIVA")
 impute_outliers <- function(x, removeNA = TRUE){
   quantiles <- quantile(x, c(0.05, 0.95), na.rm = removeNA)
@@ -133,8 +142,9 @@ impute_outliers <- function(x, removeNA = TRUE){
 activas$liquidez_corriente<-impute_outliers(activas$liquidez_corriente)
 ```
 
+Ahora con el paquete `ggplot2` podemos agrupar por provincia y mostrar que por fecha de constitución de cada empresa se puede observar la liquidez_corriente, es decir que, se evalúa la capacidad de una empresa para cumplir con sus obligaciones a corto plazo utilizando sus activos corrientes, que son aquellos que se espera que se conviertan en efectivo en un plazo de un año o menos. Esta métrica proporciona una idea de la solvencia y la salud financiera de una empresa en el corto plazo.
+
 ```{r}
-plot(activas$liquidez_corriente)
 ggplot(activas, aes(x=fecha_const, y=liquidez_corriente, color = provincia, group=provincia))   +
   geom_line() +
   geom_hline(data = activas %>% group_by(provincia) %>% summarise(ymin = quantile(liquidez_corriente, 0.25), ymed = median(liquidez_corriente), ymax = quantile(liquidez_corriente, 0.75)),
@@ -143,17 +153,21 @@ ggplot(activas, aes(x=fecha_const, y=liquidez_corriente, color = provincia, grou
              aes(yintercept = ymed), linetype = "dashed", color = "purple") +
   geom_hline(data = activas %>% group_by(provincia) %>% summarise(ymin = quantile(liquidez_corriente, 0.25), ymed = median(liquidez_corriente), ymax = quantile(liquidez_corriente, 0.75)),
              aes(yintercept = ymax), linetype = "dashed", color = "black") +
-  labs(title = "Comparativo de Indicadores de Liquidez por situacion ACTIVA y provincia",
+  labs(title = "Comparativo de Indicadores de Liquidez por situación ACTIVA y provincia",
        x = "Fecha constitución",
-       y = "Liquidez") +
+       y = "Liquidez corriente") +
   facet_wrap(~provincia)+
   theme_minimal()+
   theme(legend.position = "none")
 ```
 
+Podemos observar que en provincias como Guayas, Pichincha y Azuay existen más empresas que a su vez tienen mayor liquidez y la concentración de cada una de ellas en cuanto a sus quantiles.
+
+Del mismo modo podemos comparar en cada provincia el apalancamiento ya que esta medidase refiere al uso de deuda o financiamiento externo para amplificar el rendimiento financiero de una empresa o inversión. En otras palabras, implica tomar prestado dinero para invertirlo en actividades que se espera generen un rendimiento mayor que el costo de la deuda, a largo plazo.
+
 ```{r}
 activas$apalancamiento<-impute_outliers(activas$apalancamiento)
-plot(activas$apalancamiento)
+
 ggplot(activas, aes(x=fecha_const, y=apalancamiento, color = provincia, group=provincia))   +
   geom_line() +
   geom_hline(data = activas %>% group_by(provincia) %>% summarise(ymin = quantile(apalancamiento, 0.25), ymed = median(apalancamiento), ymax = quantile(apalancamiento, 0.75)),
@@ -164,11 +178,13 @@ ggplot(activas, aes(x=fecha_const, y=apalancamiento, color = provincia, group=pr
              aes(yintercept = ymax), linetype = "dashed", color = "black") +
   labs(title = "Comparativo de Indicadores de Apalancamiento por situacion ACTIVA y provincia",
        x = "Fecha constitución",
-       y = "apalancamiento") +
+       y = "Apalancamiento") +
   facet_wrap(~provincia)+
   theme_minimal()+
   theme(legend.position = "none")
 ```
+
+Similar a el indicador de la liquidez las empresas pueden conseguir estas inversiones cuando son constituidas, pero por ejemplo en provincias como Bolivar podemos notar que algunas empresas no pueden coseguir estos préstamos debido tal vez a que pueden afrontar sus obligaciones a corto plazo pero no lo suficiente a largo plazo.
 
 Así mismo, se podrá mostrar gráficamente el comparativo de los indicadores financieros de liquidez y solvencia por tipo de empresa.
 
@@ -188,6 +204,8 @@ ggplot(activas, aes(x=fecha_const, y=liquidez_corriente, color = tipo, group=tip
   theme_minimal()+
   theme(legend.position = "none")
 ```
+
+Gráficamente podemos notar que la mayoría de empresas son parte de responsabilidad limitada y anónimas, si es de **responsabilidad limitada**, es decir que, es una forma de entidad comercial que combina características de una sociedad y una corporación, brindando a sus propietarios (llamados miembros) una protección *limitada de responsabilidad* similar a la de una corporación, mientras mantiene una estructura y flexibilidad operativa similar a una sociedad, y por otra son **anónimas** también conocida como sociedad anónima (SA), es una forma de entidad comercial que se caracteriza por tener el capital dividido en acciones que pueden ser propiedad de múltiples accionistas. La principal característica de una empresa anónima es la separación entre la propiedad y la gestión, lo que significa que los accionistas poseen las acciones y eligen a la junta directiva para que administre y tome decisiones en nombre de la empresa. Entonces estas empresas pueden hacer frente a su liquidez y apalancamiento.
 
 ```{r}
 ggplot(activas, aes(x=fecha_const, y=apalancamiento, color = tipo, group=tipo))   +
