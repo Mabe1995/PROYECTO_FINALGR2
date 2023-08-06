@@ -286,3 +286,31 @@ balance %>% select(nombre_cia,apalancamiento) %>%
 ```
 
 ## Conclusión
+
+Según los datos proporcionados, se concluye que las empresas micro y pequeñas tienen un mayor nivel de endeudamiento del activo en comparación con las empresas grandes. El promedio de endeudamiento del activo para las empresas micro y pequeñas es de 0.810, mientras que para las empresas grandes es de 0.645.
+
+En cuanto a la liquidez por tipo de compañía, se analizaron dos grupos: aquellos con más de 60 trabajadores directos y que cuentan con 100 a 800 trabajadores administrativos. No se encontraron diferencias significativas en la liquidez corriente entre estos dos grupos de empresas.
+
+El top 10 de empresas con mayor apalancamiento se presenta a continuación:
+
+1.  ADELCA DEL LITORAL S.A. - Apalancamiento: 84393.
+
+2.  HIROAKY S.A. - Apalancamiento: 26048.
+
+3.  MEGATROPIC S.A. - Apalancamiento: 23803.
+
+4.  MOCANATI CIA.LTDA. - Apalancamiento: 18946.
+
+5.  MINERA EL PARAISO S.A. MINELPARSA - Apalancamiento: 17063.
+
+6.  VOITH HYDRO LTDA. - Apalancamiento: 14566.
+
+7.  HOLDING IN FERLE HOLFERLE S.A. - Apalancamiento: 11043.
+
+8.  TERRARIUM S.A. - Apalancamiento: 10273.
+
+9.  ECUADESK S.A. - Apalancamiento: 9602.
+
+10. FERNATCON S.A. - Apalancamiento: 9186.
+
+Es importante destacar que un alto nivel de apalancamiento puede ser una estrategia arriesgada para las empresas, ya que si no pueden generar suficientes ingresos para cubrir sus deudas, pueden enfrentar problemas financieros significativos. Por lo tanto, las empresas deben ser cautelosas al utilizar el apalancamiento y evaluar adecuadamente su capacidad de pago y riesgo asociado.
