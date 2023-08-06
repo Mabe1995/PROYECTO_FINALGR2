@@ -83,7 +83,13 @@ balance<-
 str(balance)
 ```
 
-### **Preguntas de Investigación**
+Con la base de datos obtenida, creamos una tabla resumiendo el número total de empresas por actividad económica y por actividad económica por cada cantón:
+
+```{r}
+balance %>% group_by(actividad,canton) %>% summarise(total_empresas=n())
+```
+
+**Preguntas de Investigación**
 
 #### **¿El endeudamiento del activo fue mayor en empresas micro + pequeñas vs. grandes?**
 
@@ -94,6 +100,8 @@ Pero de forma general se debe a que las empresas pequeñas tienen un limitado ac
 Estas empresas son percibidas en su mayoría como riesgosas por el hecho del tamaño, menor tiempo en el mercado y menor número de recursos, todas estas limitaciones hacen que las condiciones para préstamos sean muy restringidas y con intereses muy altos, lo que sigue incrementando el nivel de endeudamiento.
 
 Otro aspecto importante que justifica el mayor nivel de endeudamiento es que su ciclo de efectivo es más extenso, ya que se tardan más días en convertir sus activos en efectivo.
+
+Pregunta 2
 
 ```{r cars}
 summary(cars)

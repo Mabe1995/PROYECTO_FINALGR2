@@ -574,9 +574,28 @@ str(balance)</code></pre>
 ##  $ ende_patrimo      : num [1:46945] 0.0477 1.3571 2.0941 -57.0002 0.8199 ...
 ##  $ ende_activo_fijo  : num [1:46945] 0.996 1.116 3.394 -Inf 7.513 ...
 ##  $ apalancamiento    : num [1:46945] 1.05 2.36 3.09 -56 1.82 ...</code></pre>
-</div>
-<div id="preguntas-de-investigación" class="section level3">
-<h3><strong>Preguntas de Investigación</strong></h3>
+<p>Con la base de datos obtenida, creamos una tabla resumiendo el número
+total de empresas por actividad económica y por actividad económica por
+cada cantón:</p>
+<pre class="r"><code>balance %&gt;% group_by(actividad,canton) %&gt;% summarise(total_empresas=n())</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;actividad&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 1,300 × 3
+## # Groups:   actividad [21]
+##    actividad                                            canton    total_empresas
+##    &lt;fct&gt;                                                &lt;chr&gt;              &lt;int&gt;
+##  1 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. ALAUSÍ                 1
+##  2 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. AMBATO                17
+##  3 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. ATACAMES               1
+##  4 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. AZOGUES                1
+##  5 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. BAÑOS DE…              5
+##  6 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. CAYAMBE                1
+##  7 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. CHONE                  1
+##  8 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. COTACACHI              3
+##  9 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. CUENCA                57
+## 10 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. DURÁN                  1
+## # ℹ 1,290 more rows</code></pre>
+<p><strong>Preguntas de Investigación</strong></p>
 <div id="el-endeudamiento-del-activo-fue-mayor-en-empresas-micro-pequeñas-vs.-grandes" class="section level4">
 <h4><strong>¿El endeudamiento del activo fue mayor en empresas micro +
 pequeñas vs. grandes?</strong></h4>
@@ -597,6 +616,7 @@ el nivel de endeudamiento.</p>
 <p>Otro aspecto importante que justifica el mayor nivel de endeudamiento
 es que su ciclo de efectivo es más extenso, ya que se tardan más días en
 convertir sus activos en efectivo.</p>
+<p>Pregunta 2</p>
 <pre class="r"><code>summary(cars)</code></pre>
 <pre><code>##      speed           dist       
 ##  Min.   : 4.0   Min.   :  2.00  
