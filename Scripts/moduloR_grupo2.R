@@ -70,7 +70,7 @@ levels(as.factor(balance$provincia))
 ## solvencia por situacion y provincia.
 attach(balance)
 
-activas<-base1 %>% filter(situacion=="ACTIVA")
+activas<-balance %>% filter(situacion=="ACTIVA")
 impute_outliers <- function(x, removeNA = TRUE){
   quantiles <- quantile(x, c(0.05, 0.95), na.rm = removeNA)
   x[x<quantiles[1]] <- mean(x, na.rm = removeNA)
@@ -108,7 +108,7 @@ ggplot(activas, aes(x=fecha_const, y=apalancamiento, color = provincia, group=pr
              aes(yintercept = ymax), linetype = "dashed", color = "black") +
   labs(title = "Comparativo de Indicadores de Apalancamiento por situacion ACTIVA y provincia",
        x = "Fecha constitución",
-       y = "Liquidez") +
+       y = "apalancamiento") +
   facet_wrap(~provincia)+
   theme_minimal()+
   theme(legend.position = "none")
