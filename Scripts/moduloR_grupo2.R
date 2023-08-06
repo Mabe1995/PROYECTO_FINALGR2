@@ -1,3 +1,9 @@
+# Nombre de las Integrantes del grupo #2:
+
+# María Belén Rosero Soria,
+# Stephany Pachay Luna,
+# Johana Maita Suin. 
+
 #Cargar librerias
 library(openxlsx)
 library(magrittr)
