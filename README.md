@@ -4,7 +4,7 @@ En el presente estudio, se analizarán los principales indicadores o ratios fina
 
 La integración del lenguaje de programación R en el análisis financiero es una tendencia que ha tenido relevancia y crecimiento en los últimos años ya que nos brinda grandes ventajas en la manipulación y análisis de datos financieros, como es la limpieza en las bases de datos, modelos financieros, análisis cuantitativo y visualización interactiva de gráficos.
 
-R nos brinda una amplia gama de paquetes para el aprendizaje y análisis, es un lenguaje de programación completo y extenso pero flexible, los usuarios pueden ir adaptando los paquetes y funciones según sus necesidades, además al ser un software gratuito hace accesible a todo el público. Le puedes ir acoplando a lo que hay escrito no se que mas podemos poner.
+R nos brinda una amplia gama de paquetes para el aprendizaje y análisis, es un lenguaje de programación completo y extenso pero flexible, los usuarios pueden ir adaptando los paquetes y funciones según sus necesidades, además al ser un software gratuito hace accesible a todo el público.
 
 Este proyecto es de análisis financiero, donde se explorarán y manipularán datos de empresas para evaluar su liquidez y solvencia. Se realizará la carga de datos utilizando bibliotecas como "openxlsx" y "tidyverse", además, se realizarán análisis preliminares para limpiar y preparar los datos.
 
