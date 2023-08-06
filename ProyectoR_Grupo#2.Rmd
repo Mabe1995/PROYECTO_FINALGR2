@@ -86,7 +86,8 @@ str(balance)
 Con la base de datos obtenida, creamos una tabla resumiendo el número total de empresas por actividad económica y por actividad económica por cada cantón:
 
 ```{r}
-balance %>% group_by(actividad,canton) %>% summarise(total_empresas=n())
+empresas_por_canton <- balance %>% group_by(actividad,canton) %>% summarise(total_empresas=n())
+empresas_por_canton
 ```
 
 **Preguntas de Investigación**

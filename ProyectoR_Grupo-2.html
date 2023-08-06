@@ -577,9 +577,10 @@ str(balance)</code></pre>
 <p>Con la base de datos obtenida, creamos una tabla resumiendo el número
 total de empresas por actividad económica y por actividad económica por
 cada cantón:</p>
-<pre class="r"><code>balance %&gt;% group_by(actividad,canton) %&gt;% summarise(total_empresas=n())</code></pre>
+<pre class="r"><code>empresas_por_canton &lt;- balance %&gt;% group_by(actividad,canton) %&gt;% summarise(total_empresas=n())</code></pre>
 <pre><code>## `summarise()` has grouped output by &#39;actividad&#39;. You can override using the
 ## `.groups` argument.</code></pre>
+<pre class="r"><code>empresas_por_canton</code></pre>
 <pre><code>## # A tibble: 1,300 × 3
 ## # Groups:   actividad [21]
 ##    actividad                                            canton    total_empresas
