@@ -526,10 +526,10 @@ str(balance_2014)</code></pre>
 ##  $ v512        : num [1:47033] 0 0 0 0 0 0 0 0 0 NA ...
 ##   [list output truncated]</code></pre>
 </div>
-<div id="análisis-preliminar-y-preparación-de-los-datos" class="section level3">
-<h3>Análisis preliminar y preparación de los datos</h3>
-<p>La base se compone de variables numéricas y categóricas.</p>
 </div>
+<div id="análisis-preliminar-y-preparación-de-los-datos" class="section level2">
+<h2>Análisis preliminar y preparación de los datos</h2>
+<p>La base se compone de variables numéricas y categóricas.</p>
 <div id="selección-y-limpieza-de-datos" class="section level3">
 <h3>Selección y Limpieza de datos</h3>
 <p>En esta sección se creará la base, y luego se la depurará para poder
@@ -596,6 +596,44 @@ cada cantón:</p>
 ##  9 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. CUENCA                57
 ## 10 ACTIVIDADES DE ALOJAMIENTO Y DE SERVICIO DE COMIDAS. DURÁN                  1
 ## # ℹ 1,290 more rows</code></pre>
+<p>En esta parte del proyecto se realizó la depuración de la base, en
+donde también se usó <em>function.</em></p>
+<pre class="r"><code>cantidad_de_NA &lt;- sum(is.na(balance))
+balance&lt;-balance[is.finite(balance$liquidez_corriente), ] %&gt;% view()
+balance&lt;-balance[is.finite(balance$apalancamiento), ] %&gt;% view()
+variables&lt;-c(&quot;liquidez_corriente&quot;,&quot;apalancamiento&quot;,&quot;endeu_activo&quot;,&quot;ende_patrimo&quot;,
+             &quot;ende_activo_fijo&quot;)</code></pre>
+<pre class="r"><code>finitos &lt;- function(data, columna) {
+  data_filtrado &lt;- data[is.finite(data[[columna]]), ]
+  return(data_filtrado)
+}</code></pre>
+<pre class="r"><code>balance&lt;-finitos(balance,&quot;endeu_activo&quot;) 
+balance&lt;-finitos(balance,&quot;ende_patrimo&quot;) 
+balance&lt;-finitos(balance,&quot;ende_activo_fijo&quot;) 
+colSums(is.na(balance))</code></pre>
+<pre><code>##         nombre_cia          situacion               tipo               pais 
+##                  0                  0                  0                  0 
+##          provincia             canton             ciudad        fecha_const 
+##                  0                  0                  0                  0 
+##            tamanio          actividad       subactividad         trab_direc 
+##                  0                  0                  0                385 
+##         trab_admin liquidez_corriente       endeu_activo       ende_patrimo 
+##               4074                  0                  0                  0 
+##   ende_activo_fijo     apalancamiento 
+##                  0                  0</code></pre>
+<pre class="r"><code>base1 &lt;- na.omit(balance)
+colSums(is.na(base1))</code></pre>
+<pre><code>##         nombre_cia          situacion               tipo               pais 
+##                  0                  0                  0                  0 
+##          provincia             canton             ciudad        fecha_const 
+##                  0                  0                  0                  0 
+##            tamanio          actividad       subactividad         trab_direc 
+##                  0                  0                  0                  0 
+##         trab_admin liquidez_corriente       endeu_activo       ende_patrimo 
+##                  0                  0                  0                  0 
+##   ende_activo_fijo     apalancamiento 
+##                  0                  0</code></pre>
+<pre><code></code></pre>
 <p><strong>Preguntas de Investigación</strong></p>
 <div id="el-endeudamiento-del-activo-fue-mayor-en-empresas-micro-pequeñas-vs.-grandes" class="section level4">
 <h4><strong>¿El endeudamiento del activo fue mayor en empresas micro +

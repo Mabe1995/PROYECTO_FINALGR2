@@ -54,7 +54,7 @@ balance_2014<-tibble(balance_2014)
 str(balance_2014)
 ```
 
-### Análisis preliminar y preparación de los datos
+## Análisis preliminar y preparación de los datos
 
 La base se compone de variables numéricas y categóricas.
 
@@ -88,6 +88,35 @@ Con la base de datos obtenida, creamos una tabla resumiendo el número total de 
 ```{r}
 empresas_por_canton <- balance %>% group_by(actividad,canton) %>% summarise(total_empresas=n())
 empresas_por_canton
+```
+
+En esta parte del proyecto se realizó la depuración de la base, en donde también se usó *function.*
+
+```{r}
+cantidad_de_NA <- sum(is.na(balance))
+balance<-balance[is.finite(balance$liquidez_corriente), ] %>% view()
+balance<-balance[is.finite(balance$apalancamiento), ] %>% view()
+variables<-c("liquidez_corriente","apalancamiento","endeu_activo","ende_patrimo",
+             "ende_activo_fijo")
+```
+
+```{r}
+finitos <- function(data, columna) {
+  data_filtrado <- data[is.finite(data[[columna]]), ]
+  return(data_filtrado)
+}
+```
+
+```{r}
+balance<-finitos(balance,"endeu_activo") 
+balance<-finitos(balance,"ende_patrimo") 
+balance<-finitos(balance,"ende_activo_fijo") 
+colSums(is.na(balance))
+base1 <- na.omit(balance)
+colSums(is.na(base1))
+```
+
+```{}
 ```
 
 **Preguntas de Investigación**
