@@ -1,0 +1,112 @@
+---
+title: "ProyectoR_Grupo#2"
+author: "Stephany Pachay"
+date: "2023-08-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### **Setup**
+
+**Load packages**
+
+```{r}
+library(openxlsx)
+library(magrittr)
+library(tidyverse)
+library(tibble)
+library(tidyr)
+library(ggplot2)
+```
+
+**Load data**
+
+## **Introducción**
+
+En el presente estudio, analizaremos los principales indicadores o ratios financieros de diversas empresas de nuestro país, con la finalidad de determinar su situación, esto es de vital importancia ya que permite proyectarnos a una mejora en la toma de decisiones.
+
+El análisis financiero presentado fue realizado con una valiosa herramienta de análisis de datos, R, esta herramienta nos ofrece un entorno de desarrollo interactivo donde facilita la exploración y manipulación de los datos, gracias a la misma a más de realizar el análisis cuantitativo podemos visualizar y presentar nuestros resultados.
+
+Al estar evaluando empresas con diferentes actividades económicas, los objetivos pueden varias de acuerdo a su naturaleza, sin embargo, nuestro análisis se enfoca principalmente en liquidez, solvencia y rentabilidad, por lo que nos hemos propuesto los siguientes objetivos.
+
+### **Objetivo General**
+
+Evaluar la liquidez y solvencia de las empresas para cumplir sus obligaciones financieras en el corto y largo plazo, con la finalidad de generar de manera sostenible una posición dentro del mercado ecuatoriano.
+
+### **Objetivos específicos**
+
+1.  Determinar el nivel de endeudamiento del activo de las microempresas, pequeñas empresas y grandes empresas.
+2.  Comparar la liquidez de las empresas en base al número de trabajadores.
+3.  Describir el top 10 de las empresas con mayor apalancamiento.
+
+### **Metodología**
+
+La Base a trabajar es balance_2014.xlsx, que consiste en 347 variables y 47033 observaciones junto con . A continuación se presentan las variables de dicha base.
+
+```{r}
+balance_2014<-read.xlsx("Data/balances_2014.xlsx")
+ciiu<-read.xlsx("Data/ciiu.xlsx")
+cias<-read.xlsx("Data/cias_codebook.xlsx")
+balance_2014<-tibble(balance_2014)
+str(balance_2014)
+```
+
+### Análisis preliminar y preparación de los datos
+
+La base se compone de variables numéricas y categóricas.
+
+### Selección y Limpieza de datos
+
+En esta sección se creará la base, y luego se la depurará para poder identificar aquellos datos que se encuentran incompletos, incorrectos, inexactos, no pertinentes,etc. De tal manera que podamos substituir, modificar o eliminar estos datos con el fin de obtener una base de datos de calidad y hacer un análisis correcto.
+
+```{r}
+balance<-
+  balance_2014 %>%
+  inner_join(ciiu, by=c("ciiu4_nivel1"="CODIGO")) %>% 
+  inner_join(ciiu, by=c("ciiu4_nivel6"="CODIGO"))%>% 
+  mutate(liquidez_corriente=v345/v539,endeu_activo=v599/v499,
+         ende_patrimo=v599/v698,ende_activo_fijo=v698/v498, 
+         apalancamiento=v499/v698) %>% 
+  rename(actividad=DESCRIPCION.x,
+         subactividad=DESCRIPCION.y) %>% 
+  select(nombre_cia, situacion, tipo, pais, provincia, canton, ciudad,fecha_const,
+         tamanio, actividad ,subactividad,trab_direc,trab_admin,
+         liquidez_corriente,endeu_activo,ende_patrimo,
+         ende_activo_fijo,apalancamiento) %>% 
+  mutate(actividad=as.factor(actividad),
+         subactividad=as.factor(subactividad),
+         situacion=as.factor(situacion),
+         tipo=as.factor(tipo))
+str(balance)
+```
+
+### **Preguntas de Investigación**
+
+#### **¿El endeudamiento del activo fue mayor en empresas micro + pequeñas vs. grandes?**
+
+El nivel de endeudamiento del activo es mayor en las empresas micro y pequeñas a comparación de las empresas grandes, esto puede ser por diversas razones, es importante resaltar que el nivel de endeudamiento depende de factores como su industria, estructura de costos, flujos de efectivo, nivel de riesgo, objetivos, entre otros.
+
+Pero de forma general se debe a que las empresas pequeñas tienen un limitado acceso de capital, por lo que tiene que depender de mayor número de préstamos y créditos bancarios con la finalidad de continuar sus operaciones y proyectos.
+
+Estas empresas son percibidas en su mayoría como riesgosas por el hecho del tamaño, menor tiempo en el mercado y menor número de recursos, todas estas limitaciones hacen que las condiciones para préstamos sean muy restringidas y con intereses muy altos, lo que sigue incrementando el nivel de endeudamiento.
+
+Otro aspecto importante que justifica el mayor nivel de endeudamiento es que su ciclo de efectivo es más extenso, ya que se tardan más días en convertir sus activos en efectivo.
+
+```{r cars}
+summary(cars)
+```
+
+## 
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
