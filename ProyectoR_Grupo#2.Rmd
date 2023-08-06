@@ -13,6 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **Load packages**
 
+Para el análisis de datos del dataset se cargaron los siguientes paquetes:
+
 ```{r}
 library(openxlsx)
 library(magrittr)
@@ -22,7 +24,7 @@ library(tidyr)
 library(ggplot2)
 ```
 
-**Load data**
+**Load Data**
 
 ## **Introducción**
 
@@ -52,6 +54,8 @@ ciiu<-read.xlsx("Data/ciiu.xlsx")
 cias<-read.xlsx("Data/cias_codebook.xlsx")
 balance_2014<-tibble(balance_2014)
 ```
+
+Los datos están compuestos por columnas tales como: expediente, ruc, nombre_cia, situación, tipo, fecha_const, país, provincia, cantón, ciudad, ciiu4_nivel1, ciiu4_nivel6, trab_direc, trab_admin, trab_produc, trab_otros, tamaño, año, entre otras cientos de variables.
 
 ## Análisis preliminar y preparación de los datos
 
@@ -231,6 +235,7 @@ grande
 ```{r}
 comparativo<- tibble(Tamaño=c("Micro+Pequeña","Grande"),
                      Media=c(micro_pequeña$Promedio1,grande$Promedio2))
+comparativo
 ```
 
 ```{r}
@@ -241,5 +246,43 @@ ggplot(comparativo, aes(x = Tamaño, y = Media, fill = Tamaño)) +
   theme_minimal()
 ```
 
-#### ¿La liquidez por tipo de compañía es diferente entre aquellas empresas que tienen más de
-60 trabajadores directos y que cuenta con 100 a 800 trabajadores administrativos?
+#### ¿La liquidez por tipo de compañía es diferente entre aquellas empresas que tienen más de 60 trabajadores directos y que cuenta con 100 a 800 trabajadores administrativos?
+
+La liquidez varía según el tipo de empresa. Y como se puede observar en los datos de liquidez corriente, no se encuentran diferencias significativas, por ende no se puede afirmar que existan diferencias en la liquidez entre los grupos analizados.
+
+```{r}
+liquidez_compania<- balance %>% select(tipo,trab_direc,trab_admin,liquidez_corriente) %>% 
+  filter(trab_direc>60,trab_admin>=100,trab_admin<=800)
+liquidez_compania
+```
+
+```{r}
+liquidez_compania %>% group_by(tipo)%>% 
+  summarise(Promedio3 = mean(liquidez_corriente))
+```
+
+```{r}
+ggplot(liquidez_compania, aes(x = tipo, y = liquidez_corriente, fill = tipo)) +
+  geom_jitter(alpha=1,color="gray")+
+  geom_boxplot(alpha=0.1) +
+  labs(title = "Comparación de Liquidez por Tipo de Compañía",
+       x = "Tipo de Compañía", y = "Liquidez") +
+  theme_minimal()+
+  theme(legend.position = "none")
+```
+
+#### Describe el top 10 de empresas con mayor apalancamiento.
+
+El nivel de apalancamiento hace referencia a la deuda externa que genero la empresa para incrementar su rendimiento y maximizar ganancias.
+
+El apalancamiento es positivo cuando la empresa esta en la capacidad de generar ingresos suficientes para cubrir el pago de la deuda y los intereses correspondientes, pero por otro lado tenemos el apalancamiento negativo, este se da cuando los ingresos no son suficientes para cubrir la deuda, esto conlleva a un riesgo de quiebra,
+
+Por lo tanto es importante que las empresas analicen cuidadosamente su capacidad de pago y el nivel de riesgo antes de utilizar el apalancamiento, para que no se vea afectada su estabilidad financiera.
+
+```{r}
+balance %>% select(nombre_cia,apalancamiento) %>% 
+  arrange(desc(apalancamiento)) %>% 
+  head(10)
+```
+
+## Conclusión
