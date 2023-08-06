@@ -202,7 +202,7 @@ ggplot(activas, aes(x=fecha_const, y=apalancamiento, color = tipo, group=tipo)) 
   theme(legend.position = "none")
 ```
 
-**Preguntas de Investigación**
+## **Análisis de Resultados**
 
 #### **¿El endeudamiento del activo fue mayor en empresas micro + pequeñas vs. grandes?**
 
@@ -241,4 +241,5 @@ ggplot(comparativo, aes(x = Tamaño, y = Media, fill = Tamaño)) +
   theme_minimal()
 ```
 
-## 
+#### ¿La liquidez por tipo de compañía es diferente entre aquellas empresas que tienen más de
+60 trabajadores directos y que cuenta con 100 a 800 trabajadores administrativos?
