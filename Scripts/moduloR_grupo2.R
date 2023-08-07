@@ -11,6 +11,9 @@ library(tidyverse)
 library(tibble)
 library(tidyr)
 library(ggplot2)
+library(knitr)
+library(rmdformats)
+install.packages("rmdformats")
 
 #Cargar bases
 balance_2014<-read.xlsx("Data/balances_2014.xlsx")
@@ -21,7 +24,6 @@ balance_2014<-tibble(balance_2014)
 str(balance_2014)
 
 #Crear la base
-
 balance<-
   balance_2014 %>%
   inner_join(ciiu, by=c("ciiu4_nivel1"="CODIGO")) %>% 
@@ -38,8 +40,15 @@ balance<-
   mutate(actividad=as.factor(actividad),
          subactividad=as.factor(subactividad),
          situacion=as.factor(situacion),
-         tipo=as.factor(tipo)) %>%
-  view()
+         tipo=as.factor(tipo))
+df<-read.xlsx("Data/Variables.xlsx")
+kable( df , caption = ""
+       , align = c('l','c', 'l')
+       , col.names = c("Variable","Descripción","Tipo")
+       , row.names = TRUE
+       , digits = 1
+       , format.args = list( decimal.mark = ",")
+)
 
 
 ## total de empresas por actividad Y  canton
