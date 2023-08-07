@@ -3,11 +3,26 @@ title: "ANALISIS DE INDICADORES EMPRESAS 2014"
 subtitle: "ProyectoR_Grupo 2"
 author: "Stephany Pachay, Johanna Maita, María Belén Rosero"
 date: "2023-08-06"
-output: html_document
+output:
+  rmdformats::readthedown:
+    highlight: kate
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(rmdformats)
+## Global options
+options(max.print="75")
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE,
+	comment = NA,
+	prompt = FALSE,
+	tidy = TRUE
+)
+opts_knit$set(width=75)
 ```
 
 ### **INTRODUCCIÓN A LA PROGRAMACIÓN EN R**
@@ -90,6 +105,14 @@ balance<-
          subactividad=as.factor(subactividad),
          situacion=as.factor(situacion),
          tipo=as.factor(tipo))
+df<-read.xlsx("Data/Variables.xlsx")
+kable( df , caption = ""
+       , align = c('l','c', 'l')
+       , col.names = c("Variable","Descripción","Tipo")
+       , row.names = TRUE
+       , digits = 1
+       , format.args = list( decimal.mark = ",")
+      )
 ```
 
 Con la base de datos obtenida, creamos una tabla para conocer el número total de empresas por actividad económica y por actividad económica por cada cantón:
